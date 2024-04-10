@@ -10,6 +10,10 @@ namespace URManager.Backend.Data
 
     public class BackupDataProvider : IBackupDataProvider
     {
+        /// <summary>
+        /// get combobox intervall options
+        /// </summary>
+        /// <returns>list with intervalls</returns>
         public IEnumerable<BackupIntervall> GetAll()
         {
             return new List<BackupIntervall>
