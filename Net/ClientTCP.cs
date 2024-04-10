@@ -1,8 +1,6 @@
-﻿using System;
-using System.Net.NetworkInformation;
+﻿using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace URManager.Backend.Net
 {
@@ -31,16 +29,11 @@ namespace URManager.Backend.Net
         {
             var available = await PingAsync();
 
-            if (available)
-            {
-                await _clientTCP.ConnectAsync(new IPEndPoint(GetIp(_ip), _dashboardPort));
-                _stream = _clientTCP.GetStream();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            if (!available) return false;
+
+            await _clientTCP.ConnectAsync(new IPEndPoint(GetIp(_ip), _dashboardPort));
+            _stream = _clientTCP.GetStream();
+            return true;
         }
 
         /// <summary>
@@ -48,11 +41,10 @@ namespace URManager.Backend.Net
         /// </summary>
         public void Disconnect()
         {
-            if (_clientTCP is not null)
-            {
-                _clientTCP.Close();
-                _clientTCP.Dispose();
-            }
+            if (_clientTCP is null) return;
+
+            _clientTCP.Close();
+            _clientTCP.Dispose();
         }
 
         /// <summary>

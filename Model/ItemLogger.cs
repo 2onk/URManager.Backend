@@ -18,5 +18,16 @@ namespace URManager.Backend.Model
         {
             this.Add(item);
         }
+
+        /// <summary>
+        /// insert a message a position 0 to be shown on top of the list
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool InsertNewMessage(string item)
+        {
+            this.Insert(0,item);
+            return true;
+        }
     }
 }

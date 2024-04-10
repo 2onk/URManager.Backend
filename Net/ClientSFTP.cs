@@ -1,16 +1,15 @@
 ﻿using Renci.SshNet;
-using System.IO;
 
 namespace URManager.Backend.Net
 {
-    public class ClientSSH
+    public class ClientSFTP
     {
         private readonly string _ip;
         private readonly SftpClient _sftpClient;
         private static readonly string _sshServerPass = "easybot";
-        private static readonly string _sshServerUser = "root";
+        private static readonly string _sshServerUser = "ur";
 
-        public ClientSSH(string ip)
+        public ClientSFTP(string ip)
         {
             _ip = ip;
             _sftpClient = new SftpClient(_ip, _sshServerUser, _sshServerPass);
@@ -21,17 +20,15 @@ namespace URManager.Backend.Net
         /// </summary>
         public void ConnectToSftpServer()
         {
-            if (_sftpClient is not null)
-            {
-                if (!_sftpClient.IsConnected)
-                {
-                    _sftpClient.Connect();
-                    //Console.WriteLine(_sftpClient.ConnectionInfo.ServerVersion);
-                    //var result = _sftpClient.RunCommand("touch /home/ur/Desktop/text.txt");
-                    //result = _sftpClient.RunCommand("gedit /home/ur/Desktop/text.txt");
-                    //Console.WriteLine(result.Result);
-                }
-            }
+            if (_sftpClient is null) return;
+
+            if (_sftpClient.IsConnected) return;
+
+            _sftpClient.Connect();
+            //Console.WriteLine(_sftpClient.ConnectionInfo.ServerVersion);
+            //var result = _sftpClient.RunCommand("touch /home/ur/Desktop/text.txt");
+            //result = _sftpClient.RunCommand("gedit /home/ur/Desktop/text.txt");
+            //Console.WriteLine(result.Result);
         }
 
         /// <summary>

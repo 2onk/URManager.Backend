@@ -19,7 +19,7 @@ namespace URManager.Backend.Data
 
             return new List<Robot>
             {
-                new Robot{Id=1, RobotName="Handling",IP="10.10.10.10"},
+                new Robot(1, "Handling", "10.10.10.10"),
                 //new Robot{Id=2, RobotName="Handling2",IP="192.168.1.11"},
                 //new Robot{Id=3, RobotName="Handling3",IP="192.168.1.12"},
                 //new Robot{Id=4, RobotName="Palletizer",IP="192.168.1.13"},
