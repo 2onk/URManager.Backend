@@ -2,14 +2,14 @@
 
 namespace URManager.Backend.Net
 {
-    public class ClientSFTP
+    public class ClientSftp
     {
         private readonly string _ip;
         private readonly SftpClient _sftpClient;
         private static readonly string _sshServerPass = "easybot";
         private static readonly string _sshServerUser = "ur";
 
-        public ClientSFTP(string ip)
+        public ClientSftp(string ip)
         {
             _ip = ip;
             _sftpClient = new SftpClient(_ip, _sshServerUser, _sshServerPass);
