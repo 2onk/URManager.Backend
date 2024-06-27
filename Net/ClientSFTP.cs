@@ -1,5 +1,6 @@
 ﻿using Renci.SshNet;
 using System.IO;
+using System.Net.NetworkInformation;
 
 namespace URManager.Backend.Net
 {
@@ -17,15 +18,32 @@ namespace URManager.Backend.Net
         }
 
         /// <summary>
+        /// Get status if sftp connected
+        /// </summary>
+        public bool Connected => _sftpClient.IsConnected;
+
+        /// <summary>
         /// Connect to robot via sftp
         /// </summary>
-        public void ConnectToSftpServer()
+        public async Task<bool> ConnectToSftpServer()
         {
-            if (_sftpClient is null) return;
+            if (_sftpClient is null) return false;
 
-            if (_sftpClient.IsConnected) return;
+            var pingSuccess = await PingAsync();
+            if (pingSuccess is not true) return false;
 
-            _sftpClient.Connect();
+            if (_sftpClient.IsConnected) return true;
+
+            await Task.Run
+            (() =>
+            {
+                Parallel.Invoke
+                (
+                    () => { _sftpClient.Connect(); }
+                );
+            }
+            );
+            return true;
         }
 
         /// <summary>
@@ -58,15 +76,6 @@ namespace URManager.Backend.Net
             );
         }
 
-        private void UploadTask(string remotePath, string localPath)
-        {
-            using (var fileStream = new FileStream(localPath, FileMode.Open))
-            {
-                _sftpClient.BufferSize = 4 * 1024;
-                _sftpClient.UploadFile(fileStream, Path.GetFileName(localPath));
-            }
-        }
-
         /// <summary>
         /// Delete supportfile on robot
         /// </summary>
@@ -86,8 +95,29 @@ namespace URManager.Backend.Net
         }
 
         /// <summary>
-        /// Get status if sftp connected
+        /// Ping desired TCP client
         /// </summary>
-        public bool Connected => _sftpClient.IsConnected;
+        /// <returns>true if succeeded</returns>
+        private async Task<bool> PingAsync()
+        {
+            Ping ping = new Ping();
+
+            PingReply result = await ping.SendPingAsync(_ip);
+            return result.Status == IPStatus.Success;
+        }
+
+        /// <summary>
+        /// upload task async can be awaited
+        /// </summary>
+        /// <param name="remotePath"></param>
+        /// <param name="localPath"></param>
+        private void UploadTask(string remotePath, string localPath)
+        {
+            using (var fileStream = new FileStream(localPath, FileMode.Open))
+            {
+                _sftpClient.BufferSize = 4 * 1024;
+                _sftpClient.UploadFile(fileStream, Path.GetFileName(localPath));
+            }
+        }
     }
 }

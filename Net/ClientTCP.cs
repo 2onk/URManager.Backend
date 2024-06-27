@@ -99,6 +99,18 @@ namespace URManager.Backend.Net
         }
 
         /// <summary>
+        /// Ping desired TCP client
+        /// </summary>
+        /// <returns>true if succeeded</returns>
+        private async Task<bool> PingAsync()
+        {
+            Ping ping = new Ping();
+
+            PingReply result = await ping.SendPingAsync(_ip);
+            return result.Status == IPStatus.Success;
+        }
+
+        /// <summary>
         /// Set IP Adress in the TCP client
         /// </summary>
         /// <param name="ip"></param>
@@ -108,16 +120,5 @@ namespace URManager.Backend.Net
             return IPAddress.Parse(ip);
         }
 
-        /// <summary>
-        /// Ping desired TCP client
-        /// </summary>
-        /// <returns></returns>
-        private async Task<bool> PingAsync()
-        {
-            Ping ping = new Ping();
-
-            PingReply result = await ping.SendPingAsync(_ip);
-            return result.Status == IPStatus.Success;
-        }
     }
 }
