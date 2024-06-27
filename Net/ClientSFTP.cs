@@ -1,4 +1,5 @@
 ﻿using Renci.SshNet;
+using System.IO;
 
 namespace URManager.Backend.Net
 {
@@ -6,13 +7,13 @@ namespace URManager.Backend.Net
     {
         private readonly string _ip;
         private readonly SftpClient _sftpClient;
-        private static readonly string _sshServerPass = "easybot";
-        private static readonly string _sshServerUser = "root";
+        private static readonly string _sftpServerPass = "easybot";
+        private static readonly string _sftpServerUser = "ur";
 
         public ClientSftp(string ip)
         {
             _ip = ip;
-            _sftpClient = new SftpClient(_ip, _sshServerUser, _sshServerPass);
+            _sftpClient = new SftpClient(_ip, _sftpServerUser, _sftpServerPass);
         }
 
         /// <summary>
@@ -25,10 +26,6 @@ namespace URManager.Backend.Net
             if (_sftpClient.IsConnected) return;
 
             _sftpClient.Connect();
-            //Console.WriteLine(_sftpClient.ConnectionInfo.ServerVersion);
-            //var result = _sftpClient.RunCommand("touch /home/ur/Desktop/text.txt");
-            //result = _sftpClient.RunCommand("gedit /home/ur/Desktop/text.txt");
-            //Console.WriteLine(result.Result);
         }
 
         /// <summary>
@@ -41,6 +38,33 @@ namespace URManager.Backend.Net
             var filestream = File.Create(localPath);
             _sftpClient.DownloadFile(remotePath, filestream);
             filestream.Close();
+        }
+
+        /// <summary>
+        /// upload any file to the robot, upload is startet as a task
+        /// </summary>
+        public async Task UploadFile(string remotePath, string localPath)
+        {
+            _sftpClient.ChangeDirectory(remotePath);
+
+            await Task.Run
+            (() =>
+            {
+                Parallel.Invoke
+                (
+                    () => { UploadTask(remotePath, localPath); }
+                );
+            }
+            );
+        }
+
+        private void UploadTask(string remotePath, string localPath)
+        {
+            using (var fileStream = new FileStream(localPath, FileMode.Open))
+            {
+                _sftpClient.BufferSize = 4 * 1024;
+                _sftpClient.UploadFile(fileStream, Path.GetFileName(localPath));
+            }
         }
 
         /// <summary>
