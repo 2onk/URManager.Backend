@@ -7,7 +7,7 @@ namespace URManager.Backend.Net
         private readonly string _ip;
         private readonly SshClient _sshClient;
         private static readonly string _sshServerPass = "easybot";
-        private static readonly string _sshServerUser = "ur";
+        private static readonly string _sshServerUser = "root";
 
         public ClientSsh(string ip) 
         {
@@ -35,7 +35,6 @@ namespace URManager.Backend.Net
         /// </summary>
         public void SshDisconnect()
         {
-            SshClient.Dispose();
             SshClient.Disconnect();
         }
 

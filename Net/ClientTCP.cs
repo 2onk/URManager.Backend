@@ -30,10 +30,16 @@ namespace URManager.Backend.Net
             var available = await PingAsync();
 
             if (!available) return false;
-
-            await _clientTCP.ConnectAsync(new IPEndPoint(GetIp(_ip), _dashboardPort));
-            _stream = _clientTCP.GetStream();
-            return true;
+            try
+            {
+                await _clientTCP.ConnectAsync(new IPEndPoint(GetIp(_ip), _dashboardPort));
+                _stream = _clientTCP.GetStream();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         /// <summary>
