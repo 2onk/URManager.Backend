@@ -9,11 +9,11 @@ namespace URManager.Backend.Net
         private readonly string _sshServerPass;
         private readonly string _sshServerUser;
 
-        public ClientSsh(string ip, string User = "root", string Password = "easybot") 
+        public ClientSsh(string ip, string user = "root", string password = "easybot") 
         {
             _ip = ip;
-            _sshServerUser = User;
-            _sshServerPass = Password;
+            _sshServerUser = user;
+            _sshServerPass = password;
             _sshClient = new SshClient(_ip, _sshServerUser, _sshServerPass);
         }
 
@@ -25,11 +25,27 @@ namespace URManager.Backend.Net
         /// Connect to a ssh server
         /// </summary>
         /// <returns>true if succeded</returns>
-        public bool SshConnect()
+        public async Task<bool> SshConnect()
         {
-            SshClient.Connect();
-            if(SshClient.IsConnected) return true;
-            return false;
+            try
+            {
+                await Task.Run
+                (() =>
+                {
+                    Parallel.Invoke
+                    (
+                        () => { SshClient.Connect(); }
+                    );
+                }
+                );
+
+                if (SshClient.IsConnected) return true;
+                return false;
+            }
+            catch (Exception ex) 
+            {
+                return false;
+            }
         }
 
         /// <summary>

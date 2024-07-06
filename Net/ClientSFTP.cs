@@ -11,11 +11,11 @@ namespace URManager.Backend.Net
         private readonly string _sftpServerPass;
         private readonly string _sftpServerUser;
 
-        public ClientSftp(string ip, string User = "root", string Password = "easybot")
+        public ClientSftp(string ip, string user = "root", string password = "easybot")
         {
             _ip = ip;
-            _sftpServerUser = User;
-            _sftpServerPass = Password;
+            _sftpServerUser = user;
+            _sftpServerPass = password;
             _sftpClient = new SftpClient(_ip, _sftpServerUser, _sftpServerPass);
         }
 
@@ -29,23 +29,31 @@ namespace URManager.Backend.Net
         /// </summary>
         public async Task<bool> ConnectToSftpServer()
         {
-            if (_sftpClient is null) return false;
-
-            var pingSuccess = await PingAsync();
-            if (pingSuccess is not true) return false;
-
-            if (_sftpClient.IsConnected) return true;
-
-            await Task.Run
-            (() =>
+            try
             {
-                Parallel.Invoke
-                (
-                    () => { _sftpClient.Connect(); }
+                if (_sftpClient is null) return false;
+
+                var pingSuccess = await PingAsync();
+                if (pingSuccess is not true) return false;
+
+                if (_sftpClient.IsConnected) return true;
+
+                await Task.Run
+                (() =>
+                {
+                    Parallel.Invoke
+                    (
+                        () => { _sftpClient.Connect(); }
+                    );
+                }
                 );
+                return true;
             }
-            );
-            return true;
+            catch (Exception)
+            {
+                return false;
+            }
+
         }
 
         /// <summary>

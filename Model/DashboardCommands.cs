@@ -36,6 +36,6 @@
         public static string Generate_support_file => "generate support file ";
 
         //public static string Support_file_savepath => "/home/ur/ursim-current/programs.UR10/";
-        public static string Support_file_savepath => "/media/";
+        public static string Support_file_savepath => "/programs/";
     }
 }
