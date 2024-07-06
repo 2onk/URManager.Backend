@@ -6,12 +6,14 @@ namespace URManager.Backend.Net
     {
         private readonly string _ip;
         private readonly SshClient _sshClient;
-        private static readonly string _sshServerPass = "easybot";
-        private static readonly string _sshServerUser = "root";
+        private readonly string _sshServerPass;
+        private readonly string _sshServerUser;
 
-        public ClientSsh(string ip) 
+        public ClientSsh(string ip, string User = "root", string Password = "easybot") 
         {
             _ip = ip;
+            _sshServerUser = User;
+            _sshServerPass = Password;
             _sshClient = new SshClient(_ip, _sshServerUser, _sshServerPass);
         }
 

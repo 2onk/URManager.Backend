@@ -8,12 +8,14 @@ namespace URManager.Backend.Net
     {
         private readonly string _ip;
         private readonly SftpClient _sftpClient;
-        private static readonly string _sftpServerPass = "easybot";
-        private static readonly string _sftpServerUser = "root";
+        private readonly string _sftpServerPass;
+        private readonly string _sftpServerUser;
 
-        public ClientSftp(string ip)
+        public ClientSftp(string ip, string User = "root", string Password = "easybot")
         {
             _ip = ip;
+            _sftpServerUser = User;
+            _sftpServerPass = Password;
             _sftpClient = new SftpClient(_ip, _sftpServerUser, _sftpServerPass);
         }
 
@@ -115,7 +117,6 @@ namespace URManager.Backend.Net
         {
             using (var fileStream = new FileStream(localPath, FileMode.Open))
             {
-                //_sftpClient.BufferSize = 4 * 1024;
                 _sftpClient.UploadFile(fileStream, Path.GetFileName(localPath));
             }
         }
