@@ -46,7 +46,7 @@ namespace URManager.Backend.Net
         public string ExecuteCommand(string command)
         {
             var result = SshClient.RunCommand(command);
-            return result.Result;
+            return result.Result.ToString();
         }
     }
 }

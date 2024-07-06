@@ -115,7 +115,7 @@ namespace URManager.Backend.Net
         {
             using (var fileStream = new FileStream(localPath, FileMode.Open))
             {
-                _sftpClient.BufferSize = 4 * 1024;
+                //_sftpClient.BufferSize = 4 * 1024;
                 _sftpClient.UploadFile(fileStream, Path.GetFileName(localPath));
             }
         }
