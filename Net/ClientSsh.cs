@@ -42,7 +42,7 @@ namespace URManager.Backend.Net
                 if (SshClient.IsConnected) return true;
                 return false;
             }
-            catch (Exception ex) 
+            catch
             {
                 return false;
             }
@@ -53,7 +53,31 @@ namespace URManager.Backend.Net
         /// </summary>
         public void SshDisconnect()
         {
-            SshClient.Disconnect();
+            try
+            {
+                SshClient.Disconnect();
+            }
+            catch 
+            { 
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Send an terminal command to for execution
+        /// </summary>
+        /// <param name="command"></param>
+        public async Task<bool> ExecuteCommandWithoutResult(string command)
+        {
+            await Task.Run
+            (() =>
+            {
+                Parallel.Invoke
+                (
+                    () => { SshClient.RunCommand(command); }
+                );
+            });
+            return true;
         }
 
         /// <summary>
@@ -63,8 +87,8 @@ namespace URManager.Backend.Net
         /// <returns>string result</returns>
         public string ExecuteCommand(string command)
         {
-            var result = SshClient.RunCommand(command);
-            return result.Result.ToString();
+            var result =  SshClient.RunCommand(command);
+            return result.Result;
         }
     }
 }
