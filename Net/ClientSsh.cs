@@ -42,8 +42,9 @@ namespace URManager.Backend.Net
                 if (SshClient.IsConnected) return true;
                 return false;
             }
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine( ex.ToString() );
                 return false;
             }
         }
@@ -53,12 +54,13 @@ namespace URManager.Backend.Net
         /// </summary>
         public void SshDisconnect()
         {
+            if (SshClient.IsConnected is not true) return;
             try
             {
                 SshClient.Disconnect();
             }
-            catch 
-            { 
+            catch(ObjectDisposedException ex)
+            {
                 return;
             }
         }
@@ -67,17 +69,12 @@ namespace URManager.Backend.Net
         /// Send an terminal command to for execution
         /// </summary>
         /// <param name="command"></param>
-        public async Task<bool> ExecuteCommandWithoutResult(string command)
+        /// <returns>string result</returns>
+        public void ExecuteCommandAsync(string command)
         {
-            await Task.Run
-            (() =>
-            {
-                Parallel.Invoke
-                (
-                    () => { SshClient.RunCommand(command); }
-                );
-            });
-            return true;
+            var sshCommand =  SshClient.CreateCommand(command);
+            var result = sshCommand.BeginExecute(ReceiveAsync, sshCommand);
+            return;
         }
 
         /// <summary>
@@ -85,10 +82,29 @@ namespace URManager.Backend.Net
         /// </summary>
         /// <param name="command"></param>
         /// <returns>string result</returns>
-        public string ExecuteCommand(string command)
+        public string  ExecuteCommand(string command)
         {
-            var result =  SshClient.RunCommand(command);
-            return result.Result;
+            var sshCommand = SshClient.RunCommand(command);
+            return sshCommand.Result;
+        }
+
+        /// <summary>
+        /// Starts asynchronous receive from robots linux shell.
+        /// </summary>
+        /// <param name="ar"></param>
+        private void ReceiveAsync(IAsyncResult ar)
+        {
+
+            if (ar.AsyncState is not SshCommand sshState) return ;
+            try
+            {
+                var result =  sshState.EndExecute(ar);
+                return;
+            }
+            catch (Exception e)
+            {
+                return;
+            }
         }
     }
 }
