@@ -11,7 +11,7 @@ namespace URManager.Backend.Net
         private readonly string _sftpServerPass;
         private readonly string _sftpServerUser;
 
-        public ClientSftp(string ip, string user = "root", string password = "easybot")
+        public ClientSftp(string ip, string user = "ur", string password = "easybot")
         {
             _ip = ip;
             _sftpServerUser = user;

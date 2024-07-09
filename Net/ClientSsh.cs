@@ -9,7 +9,7 @@ namespace URManager.Backend.Net
         private readonly string _sshServerPass;
         private readonly string _sshServerUser;
 
-        public ClientSsh(string ip, string user = "root", string password = "easybot") 
+        public ClientSsh(string ip, string user = "ur", string password = "easybot") 
         {
             _ip = ip;
             _sshServerUser = user;
