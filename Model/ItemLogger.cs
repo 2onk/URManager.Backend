@@ -9,7 +9,6 @@ namespace URManager.Backend.Model
 
         }
 
-
         /// <summary>
         /// Add any Information as string to the ObservableCollection
         /// </summary>

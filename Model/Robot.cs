@@ -1,6 +1,4 @@
-﻿using System.Security;
-
-namespace URManager.Backend.Model
+﻿namespace URManager.Backend.Model
 {
     public class Robot
     {
