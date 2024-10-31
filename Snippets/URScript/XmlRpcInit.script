@@ -1,0 +1,20 @@
+﻿###
+# Function creates new configuration in EIP Adapter
+# NOTE: Configurations can not be changed 
+# Ethernet/IP adapter needs to be restarted to clear all configurations
+# Configuration needs to be added before connection from Ethernet/IP scanner is activated.
+# 
+# Stops program if configuration adding fails
+# @param robot_to_scanner int instance id for T->O
+# @param scanner_to_robot int instance id for O->T
+# @param size int size of each of the instances
+###
+def adapter_register_connection(robot_to_scanner = 101, robot_to_scanner_size = {size_outputs}, scanner_to_robot = 111, scanner_to_robot_size = {size_inputs}):
+  local eip_configurator = rpc_factory("xmlrpc", "http://127.0.0.1:40000/RPC2")
+  if(not eip_configurator.add_configuration(robot_to_scanner, size_outputs, scanner_to_robot, size_inputs)):
+    popup("Adding Flexible Ethernet IP instances failed")
+    halt
+  end
+  eip_configurator.closeXMLRPCClientConnection()
+  sleep(1.0)
+end
