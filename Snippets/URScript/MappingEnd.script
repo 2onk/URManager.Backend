@@ -1,0 +1,9 @@
+﻿  
+  # Watchdog will pause program after 1s of no communication from Scanner
+  robotInputs.set_watchdog(1, 1)
+
+  # Set all output bits to 0
+  robotOutputs.clear()
+
+  global eip_configured = True
+end

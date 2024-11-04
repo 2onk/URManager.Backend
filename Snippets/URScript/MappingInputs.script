@@ -1,0 +1,1 @@
+﻿  robotInputs.define_bit({byteIndex}, {bitIndex}, {bitName})

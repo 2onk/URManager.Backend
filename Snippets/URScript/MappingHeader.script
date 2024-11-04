@@ -1,0 +1,21 @@
+﻿
+# Variable is set to True after custom Ethernet/IP instances are configurad
+# It can be used in threads started before configuraiton function is called
+global eip_configured = False
+
+###
+# Create mapping between Ethernet/IP registers and named variables
+# note: function has to be called after configuration and before any other function
+# 
+# @param robot_to_scanner string instance id for T->O
+# @param scanner_to_robot string instance id for O->T
+# @param size int size of each of the instances
+###
+def init_eip_communication(robot_to_scanner = "101", scanner_to_robot = "111", robot_to_scanner_size = {size_outputs}, scanner_to_robot_size = {size_inputs}):
+  global robotOutputs = eip_writer_factory(robot_to_scanner, robot_to_scanner_size)
+  global robotInputs = eip_reader_factory(scanner_to_robot, scanner_to_robot_size)
+
+  ##########################
+  # in Scanner T2O, robot to Scanner
+  ##########################
+

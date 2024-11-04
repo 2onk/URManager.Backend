@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Snippets\URScript\MappingEnd.script" />
+    <None Remove="Snippets\URScript\MappingHeader.script" />
+    <None Remove="Snippets\URScript\MappingInputs.script" />
+    <None Remove="Snippets\URScript\MappingOutputs.script" />
+    <None Remove="Snippets\URScript\MappingOutputsComment.script" />
     <None Remove="Snippets\URScript\XmlRpcInit.script" />
   </ItemGroup>
 
@@ -17,6 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Snippets\URScript\MappingEnd.script" />
+    <EmbeddedResource Include="Snippets\URScript\MappingOutputs.script" />
+    <EmbeddedResource Include="Snippets\URScript\MappingOutputsComment.script" />
+    <EmbeddedResource Include="Snippets\URScript\MappingInputs.script" />
+    <EmbeddedResource Include="Snippets\URScript\MappingHeader.script" />
     <EmbeddedResource Include="Snippets\URScript\XmlRpcInit.script" />
   </ItemGroup>
 
