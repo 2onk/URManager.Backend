@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Snippets\URP\FlexibleEthernetIpExample.urp" />
+    <None Remove="Snippets\URScript\ExampleMethods.script" />
     <None Remove="Snippets\URScript\MappingEnd.script" />
     <None Remove="Snippets\URScript\MappingHeader.script" />
     <None Remove="Snippets\URScript\MappingInputs.script" />
@@ -22,12 +24,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Snippets\URP\FlexibleEthernetIpExample.urp" />
     <EmbeddedResource Include="Snippets\URScript\MappingEnd.script" />
+    <EmbeddedResource Include="Snippets\URScript\ExampleMethods.script" />
     <EmbeddedResource Include="Snippets\URScript\MappingOutputs.script" />
     <EmbeddedResource Include="Snippets\URScript\MappingOutputsComment.script" />
     <EmbeddedResource Include="Snippets\URScript\MappingInputs.script" />
     <EmbeddedResource Include="Snippets\URScript\MappingHeader.script" />
     <EmbeddedResource Include="Snippets\URScript\XmlRpcInit.script" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Snippets\EDS\" />
   </ItemGroup>
 
 </Project>

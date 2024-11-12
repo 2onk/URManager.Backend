@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.IO;
+using System.Reflection;
 using URManager.Backend.Model;
 
 namespace URManager.Backend.FlexibleEthernetIp
@@ -21,7 +22,7 @@ namespace URManager.Backend.FlexibleEthernetIp
         /// </summary>
         /// <param name="XmlRpcInit"></param>
         /// <returns>String with replaced sizes</returns>
-        private string GenerateInitScriptFromSnippet(string resourceName)
+        private string GenerateScriptFromSnippet(string resourceName)
         {
             string snippetContent = LoadSnippetFromResources(resourceName);
 
@@ -33,26 +34,28 @@ namespace URManager.Backend.FlexibleEthernetIp
         }
 
         /// <summary>
-        /// Get header snippet and exchange size  
+        /// Get example methods with custom names which will be also availe in urp
         /// </summary>
-        /// <param name="XmlRpcInit"></param>
+        /// <param name="resourceName"></param>
         /// <returns>String with replaced sizes</returns>
-        private string GenerateHeaderScriptFromSnippet(string resourceName)
+        private string GenerateExampleMethodsFromSnippet(string resourceName)
         {
             string snippetContent = LoadSnippetFromResources(resourceName);
 
-            string headerScript = snippetContent
-                .Replace("{size_inputs}", Inputs.Count.ToString())
-                .Replace("{size_outputs}", Outputs.Count.ToString());
+            string initScript = snippetContent
+                .Replace("{inbitName1}", Inputs[0].Bits[0].BitName)
+                .Replace("{inbitName2}", Inputs[0].Bits[1].BitName)
+                .Replace("{outbitName1}", Outputs[0].Bits[0].BitName)
+                .Replace("{outbitName2}", Outputs[0].Bits[1].BitName);
 
-            return headerScript;
+            return initScript;
         }
 
 
         /// <summary>
         /// Get input snippet and add all inputs  
         /// </summary>
-        /// <param name="XmlRpcInit"></param>
+        /// <param name="resourceName"></param>
         /// <returns>String with all inputs</returns>
         private string GenerateIoScriptFromSnippet(string resourceName, List<FlexibleEthernetIpBytes> ios )
         {
@@ -95,14 +98,31 @@ namespace URManager.Backend.FlexibleEthernetIp
         }
 
         /// <summary>
+        /// Get embedded .urp and save it in the same directory as .script
+        /// </summary>
+        /// <param name="savePath"></param>
+        private void SaveUrp(string savePath)
+        {
+            string directory = Path.GetDirectoryName(savePath);
+            string newPath = Path.Combine(directory, "FlexibleEthernetIpExample.urp");
+            var assembly = Assembly.GetExecutingAssembly();
+            using Stream resourceStream = assembly.GetManifestResourceStream("URManager.Backend.Snippets.URP.FlexibleEthernetIpExample.urp");
+            if (resourceStream == null) return;
+            using (FileStream fileStream = new FileStream(newPath, FileMode.Create, FileAccess.Write))
+            {
+                resourceStream.CopyTo(fileStream);
+            }
+        }
+
+        /// <summary>
         /// Generate .urscript with bits and bytes names for FEIP
         /// </summary>
         /// <param name="outputFilePath"></param>
         public void SaveScriptToFile(string outputFilePath)
         {
-            string scriptContent = GenerateInitScriptFromSnippet("URManager.Backend.Snippets.URScript.XmlRpcInit.script");
+            string scriptContent = GenerateScriptFromSnippet("URManager.Backend.Snippets.URScript.XmlRpcInit.script");
             AddNewContentToScript(scriptContent);
-            scriptContent = GenerateHeaderScriptFromSnippet("URManager.Backend.Snippets.URScript.MappingHeader.script");
+            scriptContent = GenerateScriptFromSnippet("URManager.Backend.Snippets.URScript.MappingHeader.script");
             AddNewContentToScript(scriptContent);
             scriptContent = GenerateIoScriptFromSnippet("URManager.Backend.Snippets.URScript.MappingInputs.script", Inputs);
             AddNewContentToScript(scriptContent);
@@ -112,7 +132,11 @@ namespace URManager.Backend.FlexibleEthernetIp
             AddNewContentToScript(scriptContent);
             scriptContent = LoadSnippetFromResources("URManager.Backend.Snippets.URScript.MappingEnd.script");
             AddNewContentToScript(scriptContent);
+            scriptContent = GenerateExampleMethodsFromSnippet("URManager.Backend.Snippets.URScript.ExampleMethods.script");
+            AddNewContentToScript(scriptContent);
             File.WriteAllText(outputFilePath, _scriptContent);
+
+            SaveUrp(outputFilePath);
         }
 
         private bool AddNewContentToScript(string newContent)

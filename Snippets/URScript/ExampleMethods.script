@@ -1,0 +1,79 @@
+﻿
+##########################################################################################
+# In the following lines you will find example methods to customize your Input variables 
+##########################################################################################
+
+###
+# Add custom field of type REAL.
+#
+# @param name string name
+# @param offset int offset Starting offset in Scanner 
+###
+def add_custom_real(name, offset):
+  robotInputs.define_float32(offset, name)
+end
+
+###
+# Add custom field of type WORD.
+# Additional field should be configured on Scanner. 
+#
+# @param name string name
+# @param offset int offset Starting offset in Scanner 
+###
+def add_custom_word(name, offset):
+  robotInputs.define_uint16(offset, name)
+end
+
+###
+# Add custom field of type BYTE.
+# Additional field should be configured on Scanner. 
+#
+# @param name string name
+# @param offset int offset Starting offset in Scanner 
+###
+def add_custom_byte(name, offset):
+  robotInputs.define_uint8(offset, name)
+end
+
+###
+# Example for reading custom offset from user parameter on Scanner
+# Custom offset can be written to user register by ansi program
+# Custom variable name is defined with add_custom_real function
+# @returns number custom variable value. Type depends on the defined value type.
+###
+def get_custom_variable(name):
+  return robotInputs.read(name)
+end
+
+
+###
+# Read example inputs
+# 
+###
+def read_example_inputs():
+    local example_struct = robotInputs.read(["{inbitName1}", "{inbitName2}"])
+    if(example_struct.{inbitName1}):
+        textmsg("{inbitName1} is True")
+    elif(example_struct.{inbitName2}):
+        textmsg("{inbitName2} is True")
+    end
+end
+
+##########################################################################################
+# In the following lines you will find example methods to customize your Output variables 
+##########################################################################################
+
+###
+# Set and reset example bits
+#
+###
+def set_example_eip_outputs():
+  robotOutputs.write(struct({outbitName1} = True))
+  sleep(2)
+  robotOutputs.write(struct({outbitName1} = False))
+  sleep(2)
+  robotOutputs.write(struct({outbitName2} = True))
+  sleep(2)
+  robotOutputs.write(struct({outbitName2} = False))
+end
+

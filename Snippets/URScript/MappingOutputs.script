@@ -1,1 +1,1 @@
-﻿  robotOutputs.define_bit({byteIndex}, {bitIndex}, {bitName})
+﻿  robotOutputs.define_bit({byteIndex}, {bitIndex}, "{bitName}")

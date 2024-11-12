@@ -1,4 +1,16 @@
-﻿###
+﻿###################################################################################################################################
+# Performance It is recommended to consider performance limitation before integrating custom Ethernet/IP Adapter with PLC Scanner. 
+# All read and write operations are delegated to non-realtime threads. 
+# In internal tests write/read turnaround cycle with PLC RPI set to 5ms wasonaverage40ms,maximumat90ms. 
+# At this point it is not recommended to use custom assemblies for applications requiring RPI below 20ms.
+###################################################################################################################################
+# 
+# Generated script with URManager https://github.com/2onk/UR_Manager
+# Feel free to contact me Sadek, David dasa@universal-robots.com 
+# V1.0 - 11.11.2024
+###########################################################################
+
+###
 # Function creates new configuration in EIP Adapter
 # NOTE: Configurations can not be changed 
 # Ethernet/IP adapter needs to be restarted to clear all configurations
@@ -9,7 +21,7 @@
 # @param scanner_to_robot int instance id for O->T
 # @param size int size of each of the instances
 ###
-def adapter_register_connection(robot_to_scanner = 101, robot_to_scanner_size = {size_outputs}, scanner_to_robot = 111, scanner_to_robot_size = {size_inputs}):
+def eip_register_connection(robot_to_scanner = 101, robot_to_scanner_size = {size_outputs}, scanner_to_robot = 111, scanner_to_robot_size = {size_inputs}):
   local eip_configurator = rpc_factory("xmlrpc", "http://127.0.0.1:40000/RPC2")
   if(not eip_configurator.add_configuration(robot_to_scanner, robot_to_scanner_size, scanner_to_robot, scanner_to_robot_size)):
     popup("Adding Flexible Ethernet IP instances failed")

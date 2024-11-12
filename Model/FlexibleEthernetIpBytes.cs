@@ -4,13 +4,13 @@ namespace URManager.Backend.Model
 {
     public class FlexibleEthernetIpBytes
     {
-        public FlexibleEthernetIpBytes()
+        public FlexibleEthernetIpBytes(int byteIndex)
         {
             Bits = new ObservableCollection<FlexibleEthernetIpBit>();
-           
+            
             for (int i = 0; i < 8; i++)
             {
-                Bits.Add(new FlexibleEthernetIpBit(i, $"Bit{i + 1}"));
+                Bits.Add(new FlexibleEthernetIpBit(i, $"Byte{byteIndex}_Bit{i}"));
             }
         }
         public ObservableCollection<FlexibleEthernetIpBit> Bits { get; }
