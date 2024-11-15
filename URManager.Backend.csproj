@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Snippets\EDS\AssemblyPartFix.eds" />
+    <None Remove="Snippets\EDS\AssemblyPartRobotToScanner.eds" />
+    <None Remove="Snippets\EDS\AssemblyPartScannerToRobot.eds" />
+    <None Remove="Snippets\EDS\NewByteParamInputs.eds" />
+    <None Remove="Snippets\EDS\NewByteParamOutputs.eds" />
+    <None Remove="Snippets\EDS\UniversalRobotsEnd.eds" />
+    <None Remove="Snippets\EDS\UniversalRobotsHeader.eds" />
     <None Remove="Snippets\URP\FlexibleEthernetIpExample.urp" />
     <None Remove="Snippets\URScript\ExampleMethods.script" />
     <None Remove="Snippets\URScript\MappingEnd.script" />
@@ -24,6 +31,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Snippets\EDS\AssemblyPartScannerToRobot.eds" />
+    <EmbeddedResource Include="Snippets\EDS\AssemblyPartRobotToScanner.eds" />
+    <EmbeddedResource Include="Snippets\EDS\AssemblyPartFix.eds" />
+    <EmbeddedResource Include="Snippets\EDS\NewByteParamOutputs.eds" />
+    <EmbeddedResource Include="Snippets\EDS\NewByteParamInputs.eds" />
+    <EmbeddedResource Include="Snippets\EDS\UniversalRobotsEnd.eds" />
+    <EmbeddedResource Include="Snippets\EDS\UniversalRobotsHeader.eds" />
     <EmbeddedResource Include="Snippets\URP\FlexibleEthernetIpExample.urp" />
     <EmbeddedResource Include="Snippets\URScript\MappingEnd.script" />
     <EmbeddedResource Include="Snippets\URScript\ExampleMethods.script" />
@@ -32,10 +46,6 @@
     <EmbeddedResource Include="Snippets\URScript\MappingInputs.script" />
     <EmbeddedResource Include="Snippets\URScript\MappingHeader.script" />
     <EmbeddedResource Include="Snippets\URScript\XmlRpcInit.script" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Snippets\EDS\" />
   </ItemGroup>
 
 </Project>

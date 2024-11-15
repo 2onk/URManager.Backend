@@ -1,0 +1,13 @@
+﻿        Param{byteIndex} =
+                            0,                      $ reserved, shall equal 0
+                            ,,                      $ Link Path Size, Link Path
+                            0x0200,                 $ Descriptor
+                            0xD1,                   $ Data Type
+                            1,                      $ Data Size in bytes
+                            "{byteName}",           $ name
+                            "",                     $ units
+                            "",                     $ help string
+                            ,,0,                    $ min, max, default data values
+                            ,,,,                    $ mult, div, base, offset scaling
+                            ,,,,                    $ mult, div, base, offset links
+                            ;                       $ decimal places
